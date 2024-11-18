@@ -1,0 +1,91 @@
+USE QuanLyBanHang;
+
+-- Tạo bảng sản phẩm
+CREATE TABLE tbSanPham (
+    maSP INT PRIMARY KEY,
+    tenSP VARCHAR(100),
+    donViTinh VARCHAR(50),
+    nuocSX VARCHAR(100),
+    gia DECIMAL(10, 2)
+);
+
+-- Tạo bảng khách hàng
+CREATE TABLE tbKhachHang (
+    maKH INT PRIMARY KEY,
+    hoTen VARCHAR(100),
+    diaChi VARCHAR(100),
+    soDT VARCHAR(15),
+    ngaySinh DATE,
+    doanhSO INT,
+    ngayDK DATE
+);
+
+-- Tạo bảng nhân viên
+CREATE TABLE tbNhanVien (
+    maNV INT PRIMARY KEY,
+    hoTen VARCHAR(100),
+    soDT VARCHAR(15),
+    ngayLamViec DATE
+);
+
+-- Tạo bảng hóa đơn
+CREATE TABLE tbHoaDon (
+    soHD INT PRIMARY KEY,
+    ngayHD DATE,
+    maKH INT,
+    maNV INT,
+    triGia DECIMAL(15, 2),
+    FOREIGN KEY (maNV) REFERENCES tbNhanVien(maNV),
+    FOREIGN KEY (maKH) REFERENCES tbKhachHang(maKH)
+);
+
+-- Tạo bảng chi tiết hóa đơn
+CREATE TABLE tbChiTietHoaDon (
+    soHD INT,
+    maSP INT,
+    soLuong INT,
+    PRIMARY KEY (soHD, maSP),
+    FOREIGN KEY (soHD) REFERENCES tbHoaDon(soHD),
+    FOREIGN KEY (maSP) REFERENCES tbSanPham(maSP)
+);
+
+--vd them du lie vaoo	
+
+INSERT INTO tbSanPham (maSP, tenSP, donViTinh, nuocSX, gia)
+VALUES 
+(1, 'Bút bi', 'Cái', 'Việt Nam', 5000.00),
+(2, 'Tập vở', 'Quyển', 'Thái Lan', 12000.00),
+(3, 'Cục tẩy', 'Cái', 'Trung Quốc', 3000.00);
+
+INSERT INTO tbKhachHang (maKH, hoTen, diaChi, soDT, ngaySinh, doanhSO, ngayDK)
+VALUES 
+(1, 'Nguyễn Văn A', 'Hà Nội', '0123456789', '1990-01-01', 500000, '2023-01-15'),
+(2, 'Trần Thị B', 'Hồ Chí Minh', '0987654321', '1995-05-20', 300000, '2023-02-01'),
+(3, 'Lê Văn C', 'Đà Nẵng', '0111222333', '1988-11-11', 700000, '2023-03-10');
+
+INSERT INTO tbNhanVien (maNV, hoTen, soDT, ngayLamViec)
+VALUES 
+(1, 'Nguyễn Thị D', '0933444555', '2022-10-01'),
+(2, 'Phạm Văn E', '0945667788', '2023-01-15'),
+(3, 'Hoàng Văn F', '0955778899', '2023-06-01');
+
+INSERT INTO tbHoaDon (soHD, ngayHD, maKH, maNV, triGia)
+VALUES 
+(1, '2024-11-01', 1, 1, 15000.00),
+(2, '2024-11-05', 2, 2, 25000.00),
+(3, '2024-11-10', 3, 3, 35000.00);
+
+INSERT INTO tbChiTietHoaDon (soHD, maSP, soLuong)
+VALUES 
+(1, 1, 2),
+(1, 2, 1),
+(2, 3, 5),
+(3, 2, 3),
+(3, 1, 4);
+
+SELECT * FROM tbSanPham;
+SELECT * FROM tbKhachHang;
+SELECT * FROM tbNhanVien;
+SELECT * FROM tbHoaDon;
+SELECT * FROM tbChiTietHoaDon;
+
