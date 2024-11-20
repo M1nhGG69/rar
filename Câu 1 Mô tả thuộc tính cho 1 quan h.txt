@@ -1,0 +1,82 @@
+Câu 1: Mô tả thuộc tính cho 1 quan hệ có trong sơ đồ thiết kế
+Chọn quan hệ film:
+
+idFilm: Mã phim (Khóa chính, kiểu chuỗi hoặc số nguyên, không rỗng).
+tua: Tựa phim (kiểu chuỗi ký tự, không rỗng).
+nguoithuchien: Người thực hiện phim (kiểu chuỗi ký tự).
+kinhphi: Kinh phí sản xuất phim (kiểu số thực, đơn vị tiền tệ).
+
+
+Câu 2: Lệnh INSERT thêm ít nhất 5 bộ cho mỗi quan hệ
+Dữ liệu mẫu:
+
+1. film
+INSERT INTO film (idFilm, tua, nguoithuchien, kinhphi)
+VALUES
+('F001', 'Avengers', 'Kevin Feige', 200000000),
+('F002', 'Titanic', 'James Cameron', 180000000),
+('F003', 'Inception', 'Christopher Nolan', 160000000),
+('F004', 'Frozen', 'Jennifer Lee', 150000000),
+('F005', 'The Matrix', 'The Wachowskis', 130000000);
+
+2. CANHAN
+INSERT INTO CANHAN (idCN, ho, ten)
+VALUES
+('CN001', 'Robert', 'Downey Jr.'),
+('CN002', 'Leonardo', 'DiCaprio'),
+('CN003', 'Christian', 'Bale'),
+('CN004', 'Idina', 'Menzel'),
+('CN005', 'Keanu', 'Reeves');
+
+3. DIENVIEN
+INSERT INTO DIENVIEN (idFilm, idCN, thulao)
+VALUES
+('F001', 'CN001', 50000000),
+('F002', 'CN002', 40000000),
+('F003', 'CN003', 35000000),
+('F004', 'CN004', 30000000),
+('F005', 'CN005', 45000000);
+
+4. LOAI
+INSERT INTO LOAI (idLoai, tenloai)
+VALUES
+('L001', 'Hành động'),
+('L002', 'Lãng mạn'),
+('L003', 'Khoa học viễn tưởng'),
+('L004', 'Hoạt hình'),
+('L005', 'Kinh dị');
+
+5. LOAIPHIM
+INSERT INTO LOAIPHIM (idFilm, idLoai)
+VALUES
+('F001', 'L001'),
+('F001', 'L003'),
+('F002', 'L002'),
+('F003', 'L003'),
+('F004', 'L004');
+
+
+Câu 3: Đề nghị 5 câu truy vấn từ dễ đến khó
+
+SELECT * FROM film;
+
+SELECT CANHAN.ho, CANHAN.ten, film.tua
+FROM CANHAN
+JOIN DIENVIEN ON CANHAN.idCN = DIENVIEN.idCN
+JOIN film ON DIENVIEN.idFilm = film.idFilm;
+
+SELECT tua, kinhphi
+FROM film
+WHERE kinhphi > 150000000;
+
+SELECT film.tua, SUM(DIENVIEN.thulao) AS tongThulao
+FROM film
+JOIN DIENVIEN ON film.idFilm = DIENVIEN.idFilm
+GROUP BY film.tua;
+
+SELECT film.tua, COUNT(LOAIPHIM.idLoai) AS soLoai
+FROM film
+JOIN LOAIPHIM ON film.idFilm = LOAIPHIM.idFilm
+GROUP BY film.tua
+HAVING COUNT(LOAIPHIM.idLoai) > 1;
+
