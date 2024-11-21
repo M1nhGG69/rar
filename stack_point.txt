@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef int elementtype;
+struct Node{
+	elementtype element;
+	Node* next;
+};
+
+typedef Node* position;
+typedef position Stack;
+
+void makenull(Stack *header){
+	(*header) = (Node*)malloc(sizeof(Node));
+	(*header)->next=NULL;
+}
+position last (Stack S){
+	position P=S;
+	while (P->next != NULL){
+		P=P->next;
+	}
+	return P;
+}
+
+void insert_Stack(elementtype x, Stack*S){
+	position T;
+	T= (Node*)malloc(sizeof(Node));
+	T->element=x;
+	position P = last(*S);
+	T->next = P->next;
+	P->next=T;
+}
+	
+void delete_Stack(Stack*S){
+	position P=*S;
+	while(P->next->next!=NULL){
+		P=P->next;
+	}
+	position T;
+	T=P->next;
+	P->next=T->next;
+	free(T);
+}
+
+
+
+#include "stack_ponit.cpp"
+void inds(Stack	S){
+	printf("\n");
+	position in;
+	in = S;
+	do{
+		in=in->next;
+		printf("%d",in->element);
+	}while(in->next!=NULL);
+}
+
+int main(){
+	Stack S;
+	makenull(&S);
+	
+	insert_Stack(1,&S);
+	insert_Stack(2,&S);
+	insert_Stack(3,&S);
+	insert_Stack(42,&S);
+	insert_Stack(13,&S);
+	
+	inds(S);
+	
+	delete_Stack(&S);
+	inds(S);
+	
+	return 0;
+	
+}

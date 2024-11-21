@@ -1,0 +1,65 @@
+#include<stdio.h>
+#define max 100
+typedef int data;
+typedef int position;
+typedef struct {
+	data datas [max];
+	position last; 
+}Stack;	
+
+void Makenull(Stack * S){
+	S->last	= 0;
+}
+
+void insert_stack(data x, Stack *S){
+	if(S->last == max){
+		printf("Danh sach da day !!");
+	}
+	else{
+		position p = S->last;
+		S->datas[p]=x;
+		S->last++;
+	}
+}
+
+void delete_stack(Stack*L){
+	if(L->last == 0 ){
+		printf("Danh sach rong !!");
+		
+	}
+	else{
+		L->last--;
+	}
+}
+
+
+
+#include "stack_array.cpp"
+void inds(Stack S){
+	position i;
+	printf("\n");
+	for(i=0;i<S.last;i++){
+		printf("%d",S.datas[i]);
+	}
+}
+
+int main(){
+	
+	Stack S;
+	Makenull (&S);
+	
+	insert_stack(1, &S);
+	insert_stack(2, &S);
+	insert_stack(3, &S);
+	insert_stack(4, &S);
+	insert_stack(5, &S);
+	
+	inds(S);
+	
+	delete_stack(&S);
+	delete_stack(&S);
+	delete_stack(&S);
+	
+	inds(S);
+	return 0;
+};
