@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// khai bao kieu du lieu
+typedef int elementtype;
+// khai bao cau truc node
+
+struct Node {
+    elementtype element;
+    Node* next;
+};
+
+// khai bao cau truc position
+typedef Node* position;
+
+// khai bao hang doi
+typedef position Queue;
+
+// ham khoi tao danh sach
+void makenull(Queue *header){
+    (*header) = (Node*)malloc(sizeof(Node));
+    (*header)->next = NULL;
+}
+
+// insert hang doi
+void insert_queue(elementtype x, Queue *Q){
+    // tao con tro N vao vi tri dau hang
+    position N;
+    N = *Q;
+    // di chuyen N ve cuoi cung
+    while (N->next != NULL){
+        N = N->next;
+    }
+    // tao con tro vao cap vung nho
+    position T;
+    T = (Node*)malloc(sizeof(Node));
+    // them T vao cuoi
+    T->element = x;
+    T->next = N->next;
+    N->next = T;
+}
+
+// ham xoa
+void delete_queue(Queue *Q){
+    // tao con tro o dau
+    position N;
+    N = *Q;
+    // kiem tra hang rong
+    if (N->next == NULL){
+        printf("Hang doi rong!!!\n");
+    } else {
+        // xoa
+        position T;
+        T = N->next;
+        N->next = T->next;
+        free(T);
+    }
+}
+
+// ham tim kiem phan tu trong danh sach
+int locate(elementtype x, Queue Q){
+    int index = 0;
+    position current = Q->next; // bo qua node header
+    while (current != NULL){
+        if (current->element == x) {
+            return index;
+        }
+        current = current->next;
+        index++;
+    }
+    return -1; // khong tim thay
+}
+
+// ham in danh sach
+void inds(Queue Q){
+    printf("\n");
+    // tao con tro chi vao vi tri dau
+    position in;
+    in = Q;
+    // dung lap in
+    do {
+        in = in->next;
+        printf("%d ", in->element);
+    } while (in->next != NULL);
+}
+
+int main(){
+    Queue Q;
+    makenull(&Q);
+
+    insert_queue(21, &Q);
+    insert_queue(3, &Q);
+    insert_queue(205, &Q);
+
+    inds(Q);
+
+    delete_queue(&Q);
+    inds(Q);
+    delete_queue(&Q);
+    inds(Q);
+    delete_queue(&Q);
+
+    // Tìm kiếm phần tử trong danh sách
+    int x;
+    printf("\nNhap gia tri can tim: ");
+    scanf("%d", &x);
+    int pos = locate(x, Q);
+    if (pos != -1) {
+        printf("Gia tri %d xuat hien o vi tri %d\n", x, pos);
+    } else {
+        printf("Gia tri %d khong ton tai trong danh sach\n", x);
+    }
+
+    return 0;
+}
